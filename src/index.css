@@ -5,3 +5,50 @@
     @apply bg-slate-950 text-slate-50 antialiased;
   }
 }
+
+@layer utilities {
+  .hexagon-mask {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .cad-line {
+    @apply border-slate-800/50 border-t;
+    height: 1px;
+    position: relative;
+  }
+
+  .cad-line::before,
+  .cad-line::after {
+    content: '';
+    @apply absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-slate-800 rounded-full;
+  }
+
+  .cad-line::before {
+    left: 0;
+  }
+
+  .cad-line::after {
+    right: 0;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
