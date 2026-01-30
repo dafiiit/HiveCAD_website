@@ -3,24 +3,34 @@ import { motion } from 'framer-motion';
 import { Github, ArrowRight, Box, Users, Puzzle, Linkedin, Zap } from 'lucide-react';
 
 function HexGrid() {
+    const hexSize = 40;
+    const hexHeight = hexSize * Math.sqrt(3);
+
     return (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <svg className="w-full h-full opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <pattern id="hexagons" width="43.3" height="75" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
-                        <path
-                            d="M21.65 0 L43.3 12.5 L43.3 37.5 L21.65 50 L0 37.5 L0 12.5 Z"
+                    <pattern
+                        id="hexagons"
+                        width={hexSize * 3}
+                        height={hexHeight}
+                        patternUnits="userSpaceOnUse"
+                    >
+                        {/* Center hexagon */}
+                        <polygon
+                            points={`${hexSize},0 ${hexSize * 2},${hexHeight / 4} ${hexSize * 2},${hexHeight * 3 / 4} ${hexSize},${hexHeight} 0,${hexHeight * 3 / 4} 0,${hexHeight / 4}`}
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="1"
-                            className="text-blue-500"
+                            strokeWidth="0.5"
+                            className="text-blue-500/60"
                         />
-                        <path
-                            d="M21.65 75 L43.3 62.5 L43.3 37.5 M0 37.5 L0 62.5 L21.65 75"
+                        {/* Right hexagon */}
+                        <polygon
+                            points={`${hexSize * 2},${hexHeight / 2} ${hexSize * 3},${hexHeight * 3 / 4} ${hexSize * 3},${hexHeight * 5 / 4}`}
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="1"
-                            className="text-blue-500"
+                            strokeWidth="0.5"
+                            className="text-blue-500/60"
                         />
                     </pattern>
                 </defs>
@@ -83,7 +93,7 @@ function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <div className="flex-shrink-0 flex items-center gap-3 font-bold text-xl tracking-tight text-white group cursor-pointer">
-                        <div className="w-10 h-10 hexagon-mask bg-slate-900 border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 p-1.5 transition-colors">
+                        <div className="w-10 hexagon-mask bg-slate-900 border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 p-1.5 transition-colors">
                             <img src="/favicon.png" alt="HiveCAD Logo" className="w-full h-full object-contain" />
                         </div>
                         <span className="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">HiveCAD</span>
@@ -225,7 +235,7 @@ function FeatureCard({ feature, idx }: { feature: any, idx: number }) {
                         {feature.coord}
                     </div>
 
-                    <div className="w-14 h-14 hexagon-mask bg-slate-800 flex items-center justify-center mb-6 text-slate-300 group-hover:text-blue-400 group-hover:bg-blue-500/10 transition-all duration-300">
+                    <div className="w-14 hexagon-mask bg-slate-800 flex items-center justify-center mb-6 text-slate-300 group-hover:text-blue-400 group-hover:bg-blue-500/10 transition-all duration-300">
                         <feature.icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
@@ -402,7 +412,7 @@ function About() {
                     <h2 className="text-4xl font-bold text-white tracking-tight mb-8">David Metzler</h2>
 
                     <div className="relative mb-12">
-                        <div className="w-40 h-40 hexagon-mask bg-blue-600/20 p-1">
+                        <div className="w-40 hexagon-mask bg-blue-600/20 p-1">
                             <img
                                 src="/Me.jpg"
                                 alt="David Metzler"
@@ -428,7 +438,7 @@ function About() {
                             rel="noopener noreferrer"
                             className="group flex flex-col items-center gap-2"
                         >
-                            <div className="w-12 h-12 hexagon-mask bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all">
+                            <div className="w-12 hexagon-mask bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all">
                                 <Linkedin className="w-5 h-5 text-slate-400 group-hover:text-blue-400" />
                             </div>
                             <span className="text-[10px] font-mono text-slate-500 group-hover:text-blue-500">LINKEDIN</span>
@@ -439,7 +449,7 @@ function About() {
                             rel="noopener noreferrer"
                             className="group flex flex-col items-center gap-2"
                         >
-                            <div className="w-12 h-12 hexagon-mask bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all">
+                            <div className="w-12 hexagon-mask bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all">
                                 <Github className="w-5 h-5 text-slate-400 group-hover:text-blue-400" />
                             </div>
                             <span className="text-[10px] font-mono text-slate-500 group-hover:text-blue-500">GITHUB</span>
