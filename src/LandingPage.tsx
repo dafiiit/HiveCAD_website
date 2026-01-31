@@ -348,7 +348,7 @@ function Roadmap() {
                 <div className="flex flex-col items-center text-center">
                     <div className="w-px h-24 bg-gradient-to-b from-blue-500/0 to-blue-500/50" />
                     <h2 className="text-3xl font-bold text-white tracking-tight uppercase font-mono mt-4">Development Cycle</h2>
-                    <div className="text-[10px] font-mono text-slate-500 mt-2 mb-20">ITERATION_LOG :: 2024-2025</div>
+                    <div className="text-[10px] font-mono text-slate-500 mt-2 mb-20">ITERATION_LOG :: 2026-NOW</div>
                 </div>
 
                 <div className="relative space-y-24">
