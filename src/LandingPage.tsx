@@ -6,7 +6,6 @@ function HexGrid() {
     // Using a Pointy-Topped Hexagon Grid
     const R = 30; // Radius (Size)
     const w = R * Math.sqrt(3); // Width of one hex
-    const h = 2 * R; // Height of one hex
     const pHeight = 3 * R; // Vertical repeat distance
 
     return (
