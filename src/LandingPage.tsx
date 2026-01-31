@@ -122,7 +122,7 @@ function Navbar() {
                     </div>
                     <div>
                         <a
-                            href="https://hivecad.org"
+                            href="https://app.hivecad.org"
                             className="inline-flex items-center justify-center px-6 py-2 border border-blue-500/30 text-xs font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60"
                         >
                             Launch Prototype
@@ -166,7 +166,7 @@ function Hero() {
                             Version-controlled, cloud-connected, and scriptable. Built for the future of Open Hardware engineering.
                         </motion.p>
                         <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
-                            <a href="https://hivecad.org" className="inline-flex items-center justify-center px-8 py-3 border border-blue-500/30 text-base font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5">
+                            <a href="https://app.hivecad.org" className="inline-flex items-center justify-center px-8 py-3 border border-blue-500/30 text-base font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5">
                                 Launch Prototype
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </a>
