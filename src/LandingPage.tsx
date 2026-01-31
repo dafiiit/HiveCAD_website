@@ -1,36 +1,48 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, ArrowRight, Box, Users, Puzzle, Linkedin, Zap } from 'lucide-react';
+import { Github, ArrowRight, GitBranch, Puzzle, Linkedin, Zap } from 'lucide-react';
 
 function HexGrid() {
-    const hexSize = 40;
-    const hexHeight = hexSize * Math.sqrt(3);
+    // Using a Pointy-Topped Hexagon Grid
+    const R = 30; // Radius (Size)
+    const w = R * Math.sqrt(3); // Width of one hex
+    const h = 2 * R; // Height of one hex
+    const pHeight = 3 * R; // Vertical repeat distance
 
     return (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <svg className="w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            {/* Increased opacity from 0.03 to 0.2 for better visibility */}
+            <svg className="w-full h-full opacity-[0.2]" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern
                         id="hexagons"
-                        width={hexSize * 3}
-                        height={hexHeight}
+                        width={w}
+                        height={pHeight}
                         patternUnits="userSpaceOnUse"
+                        x="0"
+                        y="0"
                     >
-                        {/* Center hexagon */}
-                        <polygon
-                            points={`${hexSize},0 ${hexSize * 2},${hexHeight / 4} ${hexSize * 2},${hexHeight * 3 / 4} ${hexSize},${hexHeight} 0,${hexHeight * 3 / 4} 0,${hexHeight / 4}`}
+                        {/* Seamless Tiling Logic:
+                           Draws the lines for the center hexagon and the connections to neighbors.
+                           This creates a perfect honeycomb mesh.
+                        */}
+                        <path
+                            d={`
+                                M ${w / 2} 0 
+                                L ${w / 2} ${R / 2} 
+                                L ${w} ${R} 
+                                L ${w} ${2 * R} 
+                                L ${w / 2} ${2.5 * R} 
+                                L ${w / 2} ${3 * R} 
+                                M ${w / 2} ${2.5 * R} 
+                                L 0 ${2 * R} 
+                                L 0 ${R} 
+                                L ${w / 2} ${R / 2}
+                            `}
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="0.5"
-                            className="text-blue-500/60"
-                        />
-                        {/* Right hexagon */}
-                        <polygon
-                            points={`${hexSize * 2},${hexHeight / 2} ${hexSize * 3},${hexHeight * 3 / 4} ${hexSize * 3},${hexHeight * 5 / 4}`}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="0.5"
-                            className="text-blue-500/60"
+                            strokeWidth="1"
+                            className="text-blue-500/40"
                         />
                     </pattern>
                 </defs>
@@ -39,8 +51,6 @@ function HexGrid() {
         </div>
     );
 }
-
-
 
 function DimensionLine({ label, className }: { label: string, className?: string }) {
     return (
@@ -57,8 +67,6 @@ function DimensionLine({ label, className }: { label: string, className?: string
         </div>
     );
 }
-
-
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -118,7 +126,7 @@ function Navbar() {
                             href="https://hivecad.org"
                             className="inline-flex items-center justify-center px-6 py-2 border border-blue-500/30 text-xs font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60"
                         >
-                            Execute App
+                            Launch Prototype
                         </a>
                     </div>
                 </div>
@@ -144,20 +152,23 @@ function Hero() {
 
                         <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono mb-6">
                             <Zap className="w-3 h-3" />
-                            <span>V 1.0.42-PROTOTYPE</span>
+                            {/* Updated to reflect package.json version */}
+                            <span>v0.1.0-ALPHA</span>
                         </motion.div>
 
                         <motion.h1 variants={fadeInUp} className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
-                            Professional 3D CAD. <br />
-                            <span className="text-slate-400">Entirely in your Browser.</span> <br />
+                            {/* "Professional" is a stretch; "Parametric" is factually true for Replicad */}
+                            Parametric 3D CAD. <br />
+                            <span className="text-slate-400">Git-Native Architecture.</span> <br />
                             <span className="text-blue-500">Open Source.</span>
                         </motion.h1>
                         <motion.p variants={fadeInUp} className="text-lg text-slate-400 mb-8 max-w-lg leading-relaxed">
-                            Collaborative, local-first, and extensible. Built for the future of Open Hardware engineering.
+                            {/* "Local-first" removed; "Version-controlled" added to match VCSEngine.ts capabilities */}
+                            Version-controlled, cloud-connected, and scriptable. Built for the future of Open Hardware engineering.
                         </motion.p>
                         <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
                             <a href="https://hivecad.org" className="inline-flex items-center justify-center px-8 py-3 border border-blue-500/30 text-base font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5">
-                                Execute App
+                                Launch Prototype
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </a>
                             <a href="https://github.com/dafiiit/HiveCAD" className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-full text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-transform leading-none hover:scale-105 active:scale-95 duration-200">
@@ -177,15 +188,15 @@ function Hero() {
                     >
                         <div className="absolute -inset-4 bg-blue-500/5 blur-3xl rounded-full pointer-events-none" />
 
-                        {/* Technical Overlays */}
+                        {/* Replaced fake FPS counters with actual tech specs */}
                         <div className="absolute -top-6 -right-6 z-20 bg-slate-900/80 backdrop-blur border border-slate-700 p-3 rounded-lg text-[10px] font-mono shadow-xl hidden md:block">
                             <div className="flex justify-between gap-4 mb-2">
-                                <span className="text-slate-500">VX:</span>
-                                <span className="text-blue-400">1,242</span>
+                                <span className="text-slate-500">KERNEL:</span>
+                                <span className="text-blue-400">OCCT-WASM</span>
                             </div>
                             <div className="flex justify-between gap-4">
-                                <span className="text-slate-500">FPS:</span>
-                                <span className="text-green-500">120.0</span>
+                                <span className="text-slate-500">SYNC:</span>
+                                <span className="text-green-500">OCTOKIT</span>
                             </div>
                         </div>
 
@@ -200,7 +211,7 @@ function Hero() {
 
                             <div className="absolute inset-0 border border-white/5 pointer-events-none rounded-2xl" />
                         </div>
-                        <DimensionLine label="L = 42 mm" className="mt-8 w-full opacity-50 group-hover:opacity-100 transition-opacity" />
+                        <DimensionLine label="Replicad Kernel" className="mt-8 w-full opacity-50 group-hover:opacity-100 transition-opacity" />
                     </motion.div>
 
                 </div>
@@ -279,23 +290,23 @@ function FeatureCard({ feature, idx }: { feature: any, idx: number }) {
 function Features() {
     const features = [
         {
-            title: "Local-First Architecture",
-            description: "Focus on data privacy, local storage, and Git syncing. Your data stays with you.",
-            detail: "Built on SQLite-WASM and CRDTs. Every mutation is recorded locally first, then synced via P2P or Git backends. Complete offline autonomy for complex CAD workflows.",
-            icon: Box,
+            title: "Git-Native Architecture",
+            description: "Your data lives in your GitHub repository. Full ownership, no database lock-in.",
+            detail: "Built directly on the GitHub API. Projects are stored as human-readable JSON in your own repositories. Leveraging Git for version history, secure storage, and complete data sovereignty.",
+            icon: Github,
             coord: "X: -112.70 | Y: 0.00"
         },
         {
-            title: "Collaborative Design",
-            description: "Motto: \"Bees together strong\". Real-time collaboration features designed for teams.",
-            detail: "Multi-user cursors, live assembly synchronization, and versioned branches. Workspace state is shared via decentralized protocols ensuring no single point of failure in designs.",
-            icon: Users,
+            title: "Versioned Engineering",
+            description: "Motto: \"Commit, don't overwrite\". Engineering-grade version control built-in.",
+            detail: "Manage design iterations with true semantic versioning. Create feature branches for experiments, track history with commit messages, and snapshot your progress using the internal VCS engine.",
+            icon: GitBranch,
             coord: "X: 000.00 | Y: 000.00"
         },
         {
-            title: "Plugin Ecosystem",
-            description: "Kernel + Plugin architecture allowing custom tools like ROS integration and simulation.",
-            detail: "Isolated JS sandbox for custom scripts. Deep access to the Replicad kernel for direct geometry manipulation. Seamless integration with robot simulation and CAM pipelines.",
+            title: "Community Tool Library",
+            description: "Expand the kernel with community-submitted parametric tools and generators.",
+            detail: "Integrated extension browser to discover and install new capabilities. Built on a modular Tool Registry allowing developers to share custom parametric scripts and automations directly via GitHub.",
             icon: Puzzle,
             coord: "X: 112.70 | Y: 0.00"
         }
@@ -349,22 +360,22 @@ function Roadmap() {
                     {[
                         {
                             title: "Core Architecture",
-                            detail: "WASM, Replicad Kernel",
-                            status: "Done",
+                            detail: "React + Replicad (OCCT)", // More accurate than just "WASM"
+                            status: "Operational", // "Done" sounds too final for 0.0.0
                             color: "bg-green-500",
                             side: "left"
                         },
                         {
-                            title: "Basic Features",
-                            detail: "Sketches, Constraints, 3D Ops",
-                            status: "In Progress",
+                            title: "Modeling Engine",
+                            detail: "Constraints, Snapping, Git Sync", // Matches SnappingEngine.ts and GitHubAdapter.ts
+                            status: "Beta / In Progress",
                             color: "bg-blue-500",
                             side: "right"
                         },
                         {
-                            title: "Ecosystem",
-                            detail: "Plugin Store, ROS Integration",
-                            status: "Future",
+                            title: "Community Ecosystem",
+                            detail: "Tool Registry, Robotics/ROS2", // Matches your registry.ts
+                            status: "Planned",
                             color: "bg-slate-700",
                             side: "left"
                         }
@@ -475,6 +486,3 @@ function Footer() {
         </footer>
     );
 }
-
-
-
