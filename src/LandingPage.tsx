@@ -246,7 +246,7 @@ function Navbar() {
                             href="https://app.hivecad.org"
                             className="inline-flex items-center justify-center px-6 py-2 border border-blue-500/30 text-xs font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60"
                         >
-                            Try Prototype in Cloud
+                            Try Prototype in the Cloud
                         </a>
                     </div>
                 </div>
