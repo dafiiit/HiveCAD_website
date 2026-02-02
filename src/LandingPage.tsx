@@ -1,6 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Github, ArrowRight, GitBranch, Puzzle, Linkedin, Zap } from 'lucide-react';
+import { Github, ArrowRight, GitBranch, Puzzle, Linkedin, Zap, Download, Monitor, Apple, X, Copy } from 'lucide-react';
+
+// Custom hook to fetch the latest release assets from GitHub
+function useLatestRelease() {
+    const [downloadUrls, setDownloadUrls] = useState<{
+        windows: string;
+        macos: string;
+        linux: string;
+        linuxDeb: string;
+    } | null>(null);
+
+    useEffect(() => {
+        // Fetch all releases (including drafts) instead of just /latest
+        fetch('https://api.github.com/repos/dafiiit/HiveCAD/releases')
+            .then(res => res.json())
+            .then(data => {
+                // Get the most recent release (first in array)
+                const latestRelease = Array.isArray(data) && data.length > 0 ? data[0] : null;
+                if (!latestRelease) {
+                    throw new Error('No releases found');
+                }
+
+                const assets = latestRelease.assets || [];
+                const urls = {
+                    windows: assets.find((a: any) => a.name.endsWith('.exe'))?.browser_download_url || '#',
+                    macos: assets.find((a: any) => a.name.endsWith('.dmg'))?.browser_download_url || '#',
+                    linux: assets.find((a: any) => a.name.endsWith('.AppImage'))?.browser_download_url || '#',
+                    linuxDeb: assets.find((a: any) => a.name.endsWith('.deb'))?.browser_download_url || '#',
+                };
+                setDownloadUrls(urls);
+            })
+            .catch(error => {
+                console.error('Failed to fetch latest release:', error);
+                // Fallback to releases page
+                setDownloadUrls({
+                    windows: 'https://github.com/dafiiit/HiveCAD/releases',
+                    macos: 'https://github.com/dafiiit/HiveCAD/releases',
+                    linux: 'https://github.com/dafiiit/HiveCAD/releases',
+                    linuxDeb: 'https://github.com/dafiiit/HiveCAD/releases',
+                });
+            });
+    }, []);
+
+    return downloadUrls;
+}
 
 function HexGrid() {
     // Using a Pointy-Topped Hexagon Grid
@@ -73,6 +117,83 @@ const fadeInUp = {
     transition: { duration: 0.5 }
 };
 
+function MacInstructionsModal({ isOpen, onClose, downloadUrl }: { isOpen: boolean, onClose: () => void, downloadUrl: string }) {
+    const [copied, setCopied] = useState(false);
+
+    if (!isOpen) return null;
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText("xattr -cr /Applications/HiveCAD.app");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-lg w-full relative shadow-2xl"
+            >
+                <button onClick={onClose} className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                    <X className="w-5 h-5" />
+                </button>
+
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <Apple className="w-5 h-5" />
+                    macOS Installation
+                </h3>
+
+                <div className="space-y-4 text-sm text-slate-300">
+                    <p>
+                        Since HiveCAD is currently in prototype, the app is not yet notarized by Apple. You may see a warning that the app is "damaged" or cannot be opened.
+                    </p>
+
+                    <ol className="list-decimal list-inside space-y-2 marker:text-blue-500">
+                        <li>Download and drag <strong>HiveCAD.app</strong> to your <strong>Applications</strong> folder.</li>
+                        <li>Open the <strong>Terminal</strong> app (Cmd+Space, type "Terminal").</li>
+                        <li>Run the following command to remove the quarantine flag:</li>
+                    </ol>
+
+                    <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs flex items-center justify-between group relative">
+                        <code className="text-blue-400 break-all mr-2">xattr -cr /Applications/HiveCAD.app</code>
+                        <button
+                            onClick={handleCopy}
+                            className="p-1.5 hover:bg-slate-800 rounded transition-colors text-slate-500 hover:text-white shrink-0 flex items-center gap-1"
+                            title="Copy to clipboard"
+                        >
+                            {copied ? <span className="text-green-500 font-sans font-bold">✓</span> : <Copy className="w-4 h-4" />}
+                        </button>
+                    </div>
+
+                    <p className="text-xs text-slate-500 italic">
+                        This command removes the security flag that prevents unsigned apps from running.
+                    </p>
+                </div>
+
+                <div className="mt-8 flex gap-3">
+                    <button
+                        onClick={onClose}
+                        className="flex-1 px-4 py-2 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800 transition-colors"
+                    >
+                        Close
+                    </button>
+                    <a
+                        href={downloadUrl}
+                        onClick={onClose}
+                        className="flex-1 px-4 py-2 rounded-full bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+                        download
+                    >
+                        <Download className="w-4 h-4" />
+                        Download App
+                    </a>
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
 const staggerContainer = {
     animate: {
         transition: {
@@ -125,7 +246,7 @@ function Navbar() {
                             href="https://app.hivecad.org"
                             className="inline-flex items-center justify-center px-6 py-2 border border-blue-500/30 text-xs font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60"
                         >
-                            Launch Prototype
+                            Try Prototype in Cloud
                         </a>
                     </div>
                 </div>
@@ -136,9 +257,17 @@ function Navbar() {
 
 
 function Hero() {
+    const downloadUrls = useLatestRelease();
+    const [showMacModal, setShowMacModal] = useState(false);
+
     return (
         <div id="vision" className="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden perspective-2000">
             <HexGrid />
+            <MacInstructionsModal
+                isOpen={showMacModal}
+                onClose={() => setShowMacModal(false)}
+                downloadUrl={downloadUrls?.macos || '#'}
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
                     <motion.div
@@ -165,15 +294,66 @@ function Hero() {
                             {/* "Local-first" removed; "Version-controlled" added to match VCSEngine.ts capabilities */}
                             Version-controlled, cloud-connected, and scriptable. Built for the future of Open Hardware engineering.
                         </motion.p>
-                        <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
-                            <a href="https://app.hivecad.org" className="inline-flex items-center justify-center px-8 py-3 border border-blue-500/30 text-base font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5">
-                                Launch Prototype
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                            </a>
-                            <a href="https://github.com/dafiiit/HiveCAD" className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-full text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-transform leading-none hover:scale-105 active:scale-95 duration-200">
-                                <Github className="mr-2 h-5 w-5" />
-                                GitHub
-                            </a>
+
+                        {/* Download Buttons Section */}
+                        <motion.div variants={fadeInUp} className="space-y-4">
+                            {/* Primary CTA: Download for Desktop */}
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                {downloadUrls ? (
+                                    <>
+                                        <a
+                                            href={downloadUrls.windows}
+                                            download
+                                            className="inline-flex items-center justify-center px-6 py-3 border border-blue-500/30 text-sm font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5 hover:scale-105 active:scale-95 duration-200"
+                                        >
+                                            <Monitor className="mr-2 h-4 w-4" />
+                                            Windows
+                                        </a>
+                                        <button
+                                            onClick={() => setShowMacModal(true)}
+                                            className="inline-flex items-center justify-center px-6 py-3 border border-blue-500/30 text-sm font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5 hover:scale-105 active:scale-95 duration-200 cursor-pointer"
+                                        >
+                                            <Apple className="mr-2 h-4 w-4" />
+                                            macOS
+                                        </button>
+                                        <a
+                                            href={downloadUrls.linux}
+                                            download
+                                            className="inline-flex items-center justify-center px-6 py-3 border border-blue-500/30 text-sm font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5 hover:scale-105 active:scale-95 duration-200"
+                                        >
+                                            <Download className="mr-2 h-4 w-4" />
+                                            Linux
+                                        </a>
+                                    </>
+                                ) : (
+                                    <div className="inline-flex items-center justify-center px-6 py-3 text-sm font-mono text-slate-500">
+                                        Loading downloads...
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Secondary CTA: Cloud Version */}
+                            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                                <a
+                                    href="https://app.hivecad.org"
+                                    className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium rounded-full text-slate-400 bg-slate-800/50 hover:bg-slate-700 border border-slate-700/50 transition-all hover:text-white"
+                                >
+                                    Try out the prototype in the cloud
+                                    <ArrowRight className="ml-2 h-3 w-3" />
+                                </a>
+                                <a
+                                    href="https://github.com/dafiiit/HiveCAD"
+                                    className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium rounded-full text-slate-400 hover:text-white border border-slate-700/50 hover:border-slate-600 transition-all"
+                                >
+                                    <Github className="mr-2 h-4 w-4" />
+                                    View on GitHub
+                                </a>
+                            </div>
+
+                            {/* Download hint */}
+                            <p className="text-xs text-slate-500 font-mono">
+                                ⚡ Local-first recommended • Full performance • Offline capable
+                            </p>
                         </motion.div>
 
                     </motion.div>
