@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Github, ArrowRight, GitBranch, Puzzle, Linkedin, Zap, Download, Monitor, Apple, X, Copy } from 'lucide-react';
+import { Github, ArrowRight, GitBranch, Puzzle, Linkedin, Zap, Download, X, Copy } from 'lucide-react';
+import { WindowsIcon, LinuxIcon, AppleIcon } from './Icons';
 
 // Custom hook to fetch the latest release assets from GitHub
 function useLatestRelease() {
@@ -141,7 +142,7 @@ function MacInstructionsModal({ isOpen, onClose, downloadUrl }: { isOpen: boolea
                 </button>
 
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                    <Apple className="w-5 h-5" />
+                    <AppleIcon className="w-5 h-5" />
                     macOS Installation
                 </h3>
 
@@ -246,7 +247,7 @@ function Navbar() {
                             href="https://app.hivecad.org"
                             className="inline-flex items-center justify-center px-6 py-2 border border-blue-500/30 text-xs font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60"
                         >
-                            Try Prototype in the Cloud
+                            Try the Prototype in the Cloud
                         </a>
                     </div>
                 </div>
@@ -306,14 +307,14 @@ function Hero() {
                                             download
                                             className="inline-flex items-center justify-center px-6 py-3 border border-blue-500/30 text-sm font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5 hover:scale-105 active:scale-95 duration-200"
                                         >
-                                            <Monitor className="mr-2 h-4 w-4" />
+                                            <WindowsIcon className="mr-2 h-4 w-4" />
                                             Windows
                                         </a>
                                         <button
                                             onClick={() => setShowMacModal(true)}
                                             className="inline-flex items-center justify-center px-6 py-3 border border-blue-500/30 text-sm font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5 hover:scale-105 active:scale-95 duration-200 cursor-pointer"
                                         >
-                                            <Apple className="mr-2 h-4 w-4" />
+                                            <AppleIcon className="mr-2 h-4 w-4" />
                                             macOS
                                         </button>
                                         <a
@@ -321,7 +322,7 @@ function Hero() {
                                             download
                                             className="inline-flex items-center justify-center px-6 py-3 border border-blue-500/30 text-sm font-mono uppercase tracking-widest rounded-full text-blue-400 bg-blue-500/5 hover:bg-blue-500/10 transition-all hover:border-blue-500/60 shadow-lg shadow-blue-500/5 hover:scale-105 active:scale-95 duration-200"
                                         >
-                                            <Download className="mr-2 h-4 w-4" />
+                                            <LinuxIcon className="mr-2 h-4 w-4" />
                                             Linux
                                         </a>
                                     </>
@@ -336,9 +337,9 @@ function Hero() {
                             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                                 <a
                                     href="https://app.hivecad.org"
-                                    className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium rounded-full text-slate-400 bg-slate-800/50 hover:bg-slate-700 border border-slate-700/50 transition-all hover:text-white"
+                                    className="inline-flex items-center justify-center px-6 py-2 text-sm font-medium rounded-full text-slate-400 hover:text-white border border-slate-700/50 hover:border-slate-600 transition-all"
                                 >
-                                    Try out the prototype in the cloud
+                                    Try the Prototype in the Cloud
                                     <ArrowRight className="ml-2 h-3 w-3" />
                                 </a>
                                 <a
